@@ -1,3 +1,5 @@
+
+
 Part A
 
 In this section, I explored how to structure my test suites cleanly by grouping related tests into logical blocks using describe() and it(). I also learned how to use lifestyle hooks like beforeEach() to avoid repetitive setup code and ensure each test runs in a clean, isolated browser context.
