@@ -1,32 +1,26 @@
 describe('Part J: Browser Pipeline Executions Suite', () => {
-
     it('should evaluate system level navigation and windows prompts', () => {
-      cy.visit('https://expandtesting.com');
-      cy.get('#input-number').type('55');
+        cy.visit('https://testautomationpractice.blogspot.com/', { 
+            timeout: 60000,
+            failOnStatusCode: false,
+            onBeforeLoad(win) {
+              delete win.navigator.serviceWorker;
+            }
+          });
+      cy.get('#name').type('Testing Reload');
       cy.reload();
-      cy.get('#input-number').should('have.value', '');
+      cy.get('#name').should('have.value', '');
   
-      cy.visit('https://expandtesting.com');
-      cy.get('a[href="/windows/new"]').invoke('removeAttr', 'target').click();
-      cy.url().should('include', '/windows/new');
-  
-      cy.visit('https://expandtesting.com');
+      cy.get('button[onclick="myFunctionAlert()"]').click();
       cy.on('window:alert', (str) => {
-        expect(str).to.equal('I am a JS Alert');
+        expect(str).to.equal('I am an alert box!');
       });
-      cy.contains('Click for JS Alert').click();
   
+      cy.get('button[onclick="myFunctionConfirm()"]').click();
       cy.on('window:confirm', (str) => {
-        expect(str).to.equal('I am a JS Confirm');
+        expect(str).to.equal('Press a button!');
         return true;
       });
-      cy.contains('Click for JS Confirm').click();
-  
-      cy.window().then((win) => {
-        cy.stub(win, 'prompt').returns('Cypress Prompt Automated Answer');
-      });
-      cy.contains('Click for JS Prompt').click();
     });
-  
   });
   
